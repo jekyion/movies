@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>it movies</title>
+
+		<link rel="stylesheet" href="css/style.css">
+		<link rel="stylesheet" href="css/header.css">
+
+		<script type="text/javascript" src="https://code.jquery.com/jquery-1.10.2.js"></script>
+		<script type="text/javascript">
+			function reloadMovies(search) {
+				$.get('http://127.0.0.1:8080/api/movies?search='+search, {}, function (data, textStatus, jqXHR) {
+					let html = '';
+					$.each(data, function (key, value) {
+						html += '<div class="card">';
+						html += '<img onclick="goToDetails(' + value.movieId + ')" src="' + (isImage(value.image) ? value.image : getPlaceholder()) + '" alt="movie" style="width:100%">';
+						html += '<h3>' + value.title + '</h3>';
+						html += '<p class="title">Rok produkcji</p>';
+						html += '<p>' + (value.year === undefined ? "????" : value.year) + '</p>';
+						html += '<p><button onclick="deleteMovie(' + value.movieId + ')">Usuń film: ' + value.movieId + '</button></p>';
+						html += '</div>';
+					});
+
+					$('#movies').html(html);
+				}).fail(function () {
+					$('#movies').html("<div style='text-align: center; color: red;'>Mam problem z wyświetleniem danych... :/ (musisz uruchomić aplikacje za pomocą MAVEN)</div>");
+				});
+			}
+
+			function countMovies(search) {
+				$.get('http://127.0.0.1:8080/api/movies/counter?search='+search, {}, function (data, textStatus, jqXHR) {
+					console.log('movies counter data: ', data);
+					$('#movies-counter').html(data.counter);
+				}).fail(function () {
+					console.log('movies counter error');
+					$('#movies-counter').html(0);
+				});
+			}
+
+			function deleteMovie(movieId) {
+				console.log('check delete....');
+				$.ajax({
+					url: `http://127.0.0.1:8080/api/movies/${movieId}`,
+					type: 'delete',
+					contentType: 'application/json',
+					success: function () {
+						console.log('Movie deleted: ', movieId);
+						location.reload();
+					},
+					error: function() {
+						alert('Coś poszło nie tak... Nie można usunąć filmu');
+						console.log('Movie deleted: ', movieId);
+					}
+				});
+			}
+
+			function goToDetails(movieId) {
+				window.location.href='details-movie.html?movieId='+movieId;
+			}
+
+			function isImage(url) {
+            	return url.indexOf(".jpg") !== -1 || url.indexOf(".png") !== -1;
+			}
+
+			function getPlaceholder() {
+		    	return './img/placeholder.png';
+			}
+
+			reloadMovies('');
+			countMovies('');
+
+        	$(document).ready(function() {
+            	$('#add-movie').click(function() {
+                	window.location.href='add-movie.html';
+            	});
+
+				$('#search-movie').click(function() {
+					let search = $('#search').val();
+					reloadMovies(search);
+					countMovies(search);
+				})
+        	});
+
+		</script>
+	</head>
+
+	<body>
+		<header>
+			<div class="header-title"><h1>Biblioteka filmów</h1></div><div class="header-counter-button">LICZNIK: <span id="movies-counter"></span></div><div class="header-button" id="add-movie">DODAJ FILM</div>
+		</header>
+
+		<div class="search-movie-container">
+			<label for="search">Wyszukaj film:</label>
+			<input type="search" id="search" class="search" name="search-movie"><button id="search-movie" class="small">Wyszukaj</button>
+		</div>
+
+    	<div class="movies" id="movies"></div>
+	</body>
+</html>

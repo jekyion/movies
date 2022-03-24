@@ -1,0 +1,91 @@
+body {
+    padding: 0;
+    margin: 0;
+}
+
+.card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    width: 250px;
+    margin: 20px;
+    text-align: center;
+    display: inline-block;
+}
+
+.form-data {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    width: 500px;
+    margin: 20px auto;
+    text-align: left;
+    display: block;
+    padding: 10px;
+}
+
+.card img {
+    width: 250px;
+    height: 350px;
+    cursor: pointer;
+}
+
+.card img:hover {
+    opacity: 0.6;
+}
+
+.title {
+    color: grey;
+    font-size: 18px;
+}
+
+button {
+    border: none;
+    outline: 0;
+    display: inline-block;
+    padding: 8px;
+    color: white;
+    background-color: #000;
+    text-align: center;
+    cursor: pointer;
+    width: 100%;
+    font-size: 18px;
+}
+
+button:hover {
+    opacity: 0.7;
+}
+
+.small {
+    width: 200px;
+}
+
+.search {
+    font-size: 18px;
+    padding: 6px;
+}
+
+.search-movie-container {
+    margin-top: 10px;
+    text-align: center;
+}
+
+form label {
+    padding-bottom: 40px;
+}
+
+form input {
+    width: 300px;
+    outline: none;
+    border: 1px solid #fd9535;
+    font-size: 16px;
+    margin: 0 0 15px;
+    padding: 2px;
+    border-radius: 4px;
+}
+
+.messages {
+    text-align: center;
+}
+
+iframe {
+    margin: 50px auto;
+    display: block;
+    box-shadow: 0px 14px 60px 6px #333;
+}

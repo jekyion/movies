@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>it movies</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/header.css">
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script type="text/javascript">
+
+        let searchParams = new URLSearchParams(window.location.search)
+        let param = searchParams.get('movieId')
+        console.log('param = ', param);
+
+        if(!param) {
+            // ;-)
+            alert("CO ROBISZ ŁOBUZIE!!!");
+            back();
+        }
+
+        $.get('http://127.0.0.1:8080/api/movies/' + param, {}, function (data, textStatus, jqXHR) {
+
+            console.log('data: ', data);
+            $('#title').html(data.title);
+            $('iframe').attr("src", "https://www.youtube.com/embed/" + data.videoId + "?autoplay=1");
+        }).fail(function() {
+            alert('Ups... Coś poszło nie tak :-(');
+        });
+
+        $(document).ready(function() {
+            $('#back').click(function(){
+                back();
+            });
+
+            $('#edit').click(function(){
+                edit();
+            });
+        });
+
+        function back() {
+            window.location.href='movies.html';
+        }
+
+        function edit() {
+            window.location.href='edit-movie.html?movieId=' + param;
+        }
+
+    </script>
+</head>
+
+<body>
+    <header>
+        <div class="header-title">
+            <h1 id="title">Szczegóły</h1>
+        </div><div class="header-counter-button" id="edit">EDYTUJ</div><div class="header-button" id="back">POWRÓT</div>
+    </header>
+
+    <iframe width="600" height="345" frameborder="0"></iframe>
+</body>
+</html>
